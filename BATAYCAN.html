@@ -1,0 +1,211 @@
+<html><head><base href="https://filipinonameexplorer.com/">
+<meta charset="UTF-8">
+<title>Filipino Name Generator | Discover Your Perfect Filipino Name</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f7c97c, #f1a048);
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+  }
+
+  h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .description {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .gender-select {
+    margin-bottom: 2rem;
+  }
+
+  .gender-btn {
+    background: none;
+    border: 2px solid #f1a048;
+    padding: 0.5rem 2rem;
+    margin: 0 0.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .gender-btn.active {
+    background: #f1a048;
+    color: white;
+  }
+
+  #generateBtn {
+    background: #f1a048;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #generateBtn:hover {
+    background: #e89336;
+    transform: translateY(-2px);
+  }
+
+  .name-result {
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .name {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .meaning {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .copy-btn {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    margin-top: 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .copy-btn:hover {
+    background: #34495e;
+  }
+
+  .origin-badge {
+    background: #f7c97c;
+    color: #2c3e50;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Filipino Name Generator</h1>
+    <p class="description">Discover beautiful Filipino names rich in culture and meaning</p>
+    
+    <div class="gender-select">
+      <button class="gender-btn active" data-gender="female">Female</button>
+      <button class="gender-btn" data-gender="male">Male</button>
+    </div>
+
+    <button id="generateBtn">Generate Name</button>
+
+    <div class="name-result">
+      <div class="name">Loading...</div>
+      <div class="meaning"></div>
+      <span class="origin-badge"></span>
+      <br>
+      <button class="copy-btn">Copy Name</button>
+    </div>
+  </div>
+
+<script>
+const femaleNames = {
+  "Maria Luna": "Beautiful moon, represents grace and beauty",
+  "Amihan": "North wind, associated with good fortune",
+  "Bituin": "Star, symbolizes guidance and hope",
+  "Dalisay": "Pure and genuine",
+  "Ligaya": "Joy and happiness",
+  "Mayumi": "Gentle and sweet",
+  "Tala": "Bright star, morning star",
+  "Hiraya": "Fruit of hopes, dreams, and aspirations",
+  "Sampaguita": "National flower of Philippines, represents purity",
+  "Marikit": "Beautiful and lovely"
+};
+
+const maleNames = {
+  "Agapito": "Loved one",
+  "Bayani": "Hero, warrior",
+  "Dakila": "Great, noble",
+  "Isagani": "Harvest, abundance",
+  "Kidlat": "Lightning, represents power",
+  "Likha": "Creation, creativity",
+  "Makisig": "Handsome and gallant",
+  "Ningning": "Brightness, brilliance",
+  "Tagumpay": "Victory, success",
+  "Alab": "Flame, passion"
+};
+
+const regions = [
+  "Luzon Origin",
+  "Visayan Origin",
+  "Mindanao Origin",
+  "Pre-colonial Origin",
+  "Modern Filipino"
+];
+
+let currentGender = 'female';
+
+document.querySelectorAll('.gender-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentGender = btn.dataset.gender;
+  });
+});
+
+function generateName() {
+  const names = currentGender === 'female' ? femaleNames : maleNames;
+  const namesList = Object.entries(names);
+  const randomName = namesList[Math.floor(Math.random() * namesList.length)];
+  const randomRegion = regions[Math.floor(Math.random() * regions.length)];
+  
+  document.querySelector('.name').textContent = randomName[0];
+  document.querySelector('.meaning').textContent = randomName[1];
+  document.querySelector('.origin-badge').textContent = randomRegion;
+}
+
+document.getElementById('generateBtn').addEventListener('click', generateName);
+
+document.querySelector('.copy-btn').addEventListener('click', () => {
+  const name = document.querySelector('.name').textContent;
+  navigator.clipboard.writeText(name);
+  const originalText = document.querySelector('.copy-btn').textContent;
+  document.querySelector('.copy-btn').textContent = 'Copied!';
+  setTimeout(() => {
+    document.querySelector('.copy-btn').textContent = originalText;
+  }, 2000);
+});
+
+// Generate initial name
+generateName();
+</script>
+</body></html>
